@@ -34,9 +34,7 @@
       <?php
 
          if(isset($_POST["submit"])){
-            // Create connection
             $comment = mysqli_real_escape_string($conn, $_POST["question"]);
-            // Check connection
             if ($conn->connect_error) {
                include("menu.php");
                die("<br />Une erreur est survenue, merci de ressayer plus tard<br />");
