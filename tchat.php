@@ -16,7 +16,7 @@
         <p>
           Bonjour, <br  />
           Avec le double objectif de vous laissez vous exprimez et de m'entraîner :<br />
-          Je vous présente un mini-tchat.<br />
+          Je vous présente un mini-chat.<br />
           Je vous rapelle que les données seront régulièrement lues par mes soin pour vérifier leur adéquation avec les conditions générales.<br />
           Et que toute donnée personnelle, raciste, sexiste, diffamante ou à l'encontre de la loi ou de l'éthique sera supprimée sans préavis.<br />
           Vous êtes responsable de l'utilisation de cet outil.<br />
@@ -24,6 +24,21 @@
         </p>
          <form action = "posttchat.php" method = "post">
             <label>Chat :</label><br />
+            <?php
+
+             if(isset($_GET["RGPD"])){
+               ?>
+               J'accepte les conditions d'utilisations <input type="checkbox" name = "RGPD" id = "RGPD" checked />
+               <br />
+               <?php
+             }
+             else{
+               ?>
+               J'accepte les conditions d'utilisations <input type="checkbox" name = "RGPD" id = "RGPD" />
+               <br />
+               <?php
+             }
+            ?>
             Pseudo <input type = "text" name = "pseudo" id = "pseudo" style="width: 200px;"/>
             <br />
             Message <input type = "text" name = "message" id = "message" style="width: 500px;"/>
@@ -46,6 +61,7 @@
          if ($conn->connect_error) {
              die("Connection failed: " . $conn->connect_error);
          }
+
        // Si tout va bien, on peut continuer
 
        // On récupère tout le contenu de la table jeux_video

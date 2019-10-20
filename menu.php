@@ -20,6 +20,9 @@
         <a href="jeuxvideos.php">Mes Jeux</a>
       </li>
       <li>
+        <a href="tchat.php">Le chat</a>
+      </li>
+      <li>
         <a href="conditions.php">Conditions générales</a>
       </li>
       <li>
