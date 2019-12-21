@@ -32,26 +32,29 @@
          </form>
 
       <?php
+      require 'dbconnect.php';
 
          if(isset($_POST["submit"])){
-            $comment = mysqli_real_escape_string($conn, $_POST["question"]);
-            if ($conn->connect_error) {
+            // Create connection
+            $comment = mysqli_real_escape_string($con, $_POST["question"]);
+            // Check connection
+            if ($con->connect_error) {
                include("menu.php");
                die("<br />Une erreur est survenue, merci de ressayer plus tard<br />");
             }
             $sql = "INSERT INTO collecte_question(question) VALUES ('".$comment."')";
 
-            if (mysqli_query($conn, $sql)) {
+            if (mysqli_query($con, $sql)) {
                echo "<br />Merci de votre aide !<br />";
             } else {
                echo "<br />Une erreur est survenue, merci de ressayer plus tard<br />";
             }
          }
-         if ($result = $conn->query("SELECT * FROM collecte_question")){
+         if ($result = $con->query("SELECT * FROM collecte_question")){
            $row_cnt = $result->num_rows;
          }
          echo "<br />L'objectif est de 4000 questions, et il y en a actuellement : " . $row_cnt;
-         $conn->close();
+         $con->close();
       ?>
     </div>
       <?php include("menu.php"); ?>

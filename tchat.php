@@ -48,25 +48,18 @@
          </form>
 
          <?php
-         $servername = "localhost";
-         $username = "root";
-         $database = "minitchat";
-         $password = "";
-         $conn = new mysqli($servername, $username, $password, $database, 3306);
-
-         //  Create a new connection to the MySQL database using PDO
-         $conn = new mysqli($servername, $username, $password, $database);
+         require 'dbconnect.php';
 
          // Check connection
-         if ($conn->connect_error) {
-             die("Connection failed: " . $conn->connect_error);
+         if ($con->connect_error) {
+             die("Connection failed: " . $con->connect_error);
          }
 
        // Si tout va bien, on peut continuer
 
        // On récupère tout le contenu de la table jeux_video
        $query = "SELECT * FROM messages ORDER BY id DESC limit 10";
-       $result = mysqli_query($conn, $query);
+       $result = mysqli_query($con, $query);
 
        while($donnees = mysqli_fetch_assoc($result)) {
          ?>
@@ -75,7 +68,7 @@
         </p>
        <?php
        }
-       $conn->close();
+       $con->close();
        ?>
 
     </div>

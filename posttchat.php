@@ -10,11 +10,7 @@
 </head>
 <body>
   <?php
-  $servername = "localhost";
-  $username = "root";
-  $database = "minitchat";
-  $password = "";
-  $conn = new mysqli($servername, $username, $password, $database, 3306);
+  require 'dbconnect.php';
 
   // Check connection
   if (mysqli_connect_errno())
@@ -25,10 +21,10 @@
 
        if(isset($_POST["RGPD"])){
 
-        $pseudo = mysqli_real_escape_string($conn, $_POST["pseudo"]);
-        $message = mysqli_real_escape_string($conn, $_POST["message"]);
+        $pseudo = mysqli_real_escape_string($con, $_POST["pseudo"]);
+        $message = mysqli_real_escape_string($con, $_POST["message"]);
         // Check connection
-        if ($conn->connect_error) {
+        if ($con->connect_error) {
           ?>
           <?php include("titre.php"); ?>
           <div id="bloc_page">
@@ -44,7 +40,7 @@
         }
         $sql = "INSERT INTO messages(pseudo, texte) VALUES ('".$pseudo."', '".$message."')";
 
-        if (mysqli_query($conn, $sql)) {
+        if (mysqli_query($con, $sql)) {
           header('Location:tchat.php?RGPD=true');
         } else {
            echo "<br />Une erreur est survenue, merci de ressayer plus tard.<br />";
@@ -69,7 +65,7 @@
        <?php
      }
    }
-     $conn->close();
+     $con->close();
   ?>
 </body>
 </html>

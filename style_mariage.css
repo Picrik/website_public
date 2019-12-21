@@ -4,7 +4,7 @@ body {
   text-align: center;
   color: white;
   background-color: black;
-  background-image: url("pic/IMG_3164.jpg");
+  background-image: url("pic/fond2.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -31,13 +31,13 @@ a:hover {
 
 #titre {
   font-size: 3em;
-  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.2em black;
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
   text-align: right;
   padding-right: 100px;
 }
 
 #bloc_page {
-  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.2em black;
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
   width: 900px;
   margin: auto;
 }
@@ -48,7 +48,7 @@ a:hover {
 }
 
 #piedPage li {
-  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.2em black;
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
   text-align: left;
   padding-top: 10px;
   padding-left: -5px;
