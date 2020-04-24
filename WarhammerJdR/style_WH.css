@@ -1,0 +1,111 @@
+body {
+  font-family: Contrail One, Arial, sans-serif;
+  font-size: 1.3em;
+  text-align: center;
+  color: white;
+  background-color: black;
+  background-image: url("pic/background.jpg");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100%;
+  padding-bottom: 15px;
+}
+
+H1 {
+  text-decoration: underline;
+  font-size: 2rem;
+}
+
+H2 {
+  font-size: 1.5rem;
+}
+
+a {
+  color:white;
+  font-size: 1.5rem;
+}
+
+a:hover {
+  color: black;
+}
+
+#titre {
+  font-size: 3em;
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
+  text-align: right;
+  padding-right: 100px;
+}
+
+#bloc_page {
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
+  width: 900px;
+  margin: auto;
+}
+
+#piedPage {
+  position: fixed;
+  bottom: 0;
+}
+
+#piedPage li {
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
+  text-align: left;
+  padding-top: 10px;
+  padding-left: -5px;
+  text-decoration: underline;
+  list-style: none;
+  cursor: pointer;
+}
+
+#piedPage li a {
+  color : white;
+}
+
+#piedPage li a:hover {
+  color: black;
+}
+
+#division {
+  display: flex;
+  justify-content: space-evenly;
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
+  width: 900px;
+  margin: auto;
+}
+
+#competences {
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
+  width: 900px;
+  margin: auto;
+}
+
+#gauche
+{
+  font-size: 1.2rem;
+    width: 20%;
+}
+
+#centre
+{
+  font-size: 1.2rem;
+    width: 40%;
+}
+
+#droite
+{
+  font-size: 1.2rem;
+    width: 40%;
+}
+
+#copyright {
+  font-size: 1rem;
+  text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
+  width: 900px;
+  margin: auto;
+}
+
+#deuxpart
+{
+    width: 45%;
+}
