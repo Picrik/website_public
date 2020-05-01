@@ -39,7 +39,7 @@ a:hover {
 
 #bloc_page {
   text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
-  width: 900px;
+  width: 1000px;
   margin: auto;
 }
 
@@ -70,38 +70,38 @@ a:hover {
   display: flex;
   justify-content: space-evenly;
   text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
-  width: 900px;
+  width: 1000px;
   margin: auto;
 }
 
 #competences {
   text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
-  width: 900px;
+  width: 1000px;
   margin: auto;
 }
 
 #gauche
 {
   font-size: 1.2rem;
-    width: 20%;
+    width: 32%;
 }
 
 #centre
 {
   font-size: 1.2rem;
-    width: 40%;
+    width: 32%;
 }
 
 #droite
 {
   font-size: 1.2rem;
-    width: 40%;
+    width: 32%;
 }
 
 #copyright {
   font-size: 1rem;
   text-shadow: 1px 1px 2px black, 0 0 0.5em black, 0 0 0.3em black;
-  width: 900px;
+  width: 1000px;
   margin: auto;
 }
 

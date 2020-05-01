@@ -1,0 +1,26 @@
+Scénario court
+
+Idéal pour groupe débutant
+
+Motivations pour les PJ :
+	Mettre à jour la présence d'un Cultiste en Ville
+	En apprendre plus sur le Vent d'Ambre
+	Gagner de l'argent
+
+Contexte :
+
+Un cultiste utilise ses pouvoirs pouvoir pour invoqué des nuées d'araignées géantes dans le sud de la ville.
+Les Joueurs sont appelé sur cette quête par un villageois (aubergiste/riverain) s'il propose d'aider, 
+ou si un des joueurs avec la compétence seconde vue ressent la corruption du Vent d'Ambre
+ou si les joueurs tombent nez à nez avec l'une des araignées géantes provenant de la cachette du cultiste.
+
+Fonctionnement :
+
+Chaque soir le cultiste va invoquer une nuée d'araignées géantes (1d10) qui va se répandre en ville et causer des dégats.
+Les joueurs doivent se rendent compte que ces créatures ne sont pas naturelles (via un test/détection magique ...)
+Puis remonter leur piste (via pistage/seconde vue ...)
+Et affronter le Cultiste. Ce dernier n'est présent chez lui qu'à la nuit tombée. Si les joueurs viennent de jours il ne peuvent que saccager son atelier.
+
+Option si joueurs trop rapides :
+
+Rajout d'une caverne cachée où le cultiste travaille

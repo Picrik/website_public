@@ -34,6 +34,8 @@
      $valeurFicheInt = ($donnees2['intel'] + $donnees2['intelAug']);
      $valeurFicheFM = ($donnees2['forceMen'] + $donnees2['forceMenAug']);
      $valeurFicheSoc = ($donnees2['sociabilite'] + $donnees2['sociabiliteAug']);
+     $valeurFicheBlessure = floor($valeurFicheF/10) + (2*floor($valeurFicheE/10)) + floor($valeurFicheFM/10);
+     $valeurFicheBlessureSubie = $donnees2['BlessureSubie'];
     }
    ?>
    <p>
@@ -47,11 +49,15 @@
          <th>Classe</th>
          <th>Carrière</th>
          <th>Echelon</th>
+         <th>Age</th>
+         <th>Taille</th>
+         <th>Cheveux</th>
+         <th>Yeux</th>
        </tr>
        
        <?php
        // affichage des caractéristiques de base
-     $query = "SELECT * FROM wh_pjcar WHERE id = '".$idJoueur."'";
+     $query = "SELECT * FROM wh_pjcar WHERE id_joueur = '".$idJoueur."'";
      $result = mysqli_query($con, $query);
    while($donnees = mysqli_fetch_assoc($result)) {
      ?>
@@ -63,6 +69,10 @@
        <td><?php echo $donnees['classe']; ?></td>
        <td><?php echo $donnees['carriere']; ?></td>
        <td><?php echo $donnees['echelon']; ?></td>
+       <td><?php echo $donnees['age']; ?></td>
+       <td><?php echo $donnees['taille']; ?></td>
+       <td><?php echo $donnees['cheveux']; ?></td>
+       <td><?php echo $donnees['yeux']; ?></td>
  </table>
  <?php
    }

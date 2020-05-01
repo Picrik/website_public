@@ -1,6 +1,5 @@
 <div id="piedPage">
 <ul>
-      <li>
       <?php
       require 'dbconnect.php';
 
@@ -17,15 +16,27 @@
     }else{
       $idJoueur = mysqli_real_escape_string($con, $_GET["idJoueur"]);
     }
-        echo '<a href="joueur.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Personnage</a></li>';
+        echo '<li><a href="joueur.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Personnage</a></li>';
+        echo '<li><a href="histoirepj.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Histoire Personnelle</a></li>';
         echo '<li><a href="tests.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Gestion des tests</a></li>';
-        echo '<li><a href="testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Gestion des combats</a></li>';
+        // echo '<li><a href="testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Gestion des combats</a></li>'; WIP
 
-
+        //affichage ou non du grimoire
+        $query = "SELECT * FROM wh_pjcar WHERE id_joueur = '".$idJoueur."'";
+        $result = mysqli_query($con, $query);
+        while($donnees = mysqli_fetch_assoc($result)) {
+          if($donnees['magie']=='oui'){
+        echo '<li><a href="grimoire.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Grimoire</a></li>';
+          }
+          if($donnees['beni']=='oui'){
+            echo '<li><a href="priere.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Livre de prière</a></li>';
+              }
+          if($donnees['administrateur']=='oui'){
+            echo '<li><a href="admin.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Panneau MJ</a></li>';
+              }
+        }
       }else{
-        ?>
-            <a href="connexion.php">Choix du personnage</a><br />
-            <?php
+        echo '<li><a href="connexion.php">Choix du personnage</a></li>';
       }
 ?>
     </li>
@@ -38,9 +49,6 @@
       <?php
     }
     ?>
-    <li>
-    <a href="admin.php">Panneau MJ</a>
-    </li>
     <li>
     <a href="connexion.php">Deconnexion</a>
     </li>

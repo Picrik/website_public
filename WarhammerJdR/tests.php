@@ -284,7 +284,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
     }elseif($valeurJoueur<=5){
       echo "Critique";
       $resultatT = "Critique";
-    }elseif($valeurJoueur<=$valeurFiche){
+    }elseif($valeurJoueur<=$valeurCompe){
       echo "Réussite";
       $resultatT = "Réussite";
     }else{
@@ -401,7 +401,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
     }elseif($valeurJoueur<=5){
       echo "Critique";
       $resultatT = "Critique";
-    }elseif($valeurJoueur<=$valeurFiche){
+    }elseif($valeurJoueur<=$valeurcompespe){
       echo "Réussite";
       $resultatT = "Réussite";
     }else{

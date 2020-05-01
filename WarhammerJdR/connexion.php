@@ -36,10 +36,10 @@
     }
 
 // On récupère tout le contenu de la table invites
-$query = "SELECT id FROM wh_pjcar WHERE nomJoueur = '".$nomJoueur."' AND nomPerso = '".$nomPerso."'";
+$query = "SELECT id_joueur FROM wh_pjcar WHERE nomJoueur = '".$nomJoueur."' AND nomPerso = '".$nomPerso."'";
 $result = mysqli_query($con, $query);
 while($donnees = mysqli_fetch_assoc($result)) {
-$idJoueur = $donnees['id'];
+$idJoueur = $donnees['id_joueur'];
 header('Location:joueur.php?PJ=TRUE&idJoueur='.$idJoueur.'');
 }
 $con->close();

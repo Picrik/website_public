@@ -12,10 +12,8 @@
 <body>
   <?php include("titreWH.php"); ?>
   <?php include("entete.php"); ?>
-
+  </table>
   <div id="bloc_page">
-</table>
- <br />
  <h1>Vos Caractéristiques</h1>
  <table align="center" cellpadding="5">
    <tr>
@@ -24,8 +22,8 @@
      <th>CT</th>
      <th>Force</th>
      <th>Endurance</th>
-     <th>Agilité</th>
      <th>Initiative</th>
+     <th>Agilité</th>
      <th>Dextérité</th>
      <th>Intelligence</th>
      <th>Force Mentale</th>
@@ -45,8 +43,8 @@ while($donnees = mysqli_fetch_assoc($result)) {
    <td><?php echo $donnees['capaTir']; ?></td>
    <td><?php echo $donnees['forcep']; ?></td>
    <td><?php echo $donnees['endu']; ?></td>
-   <td><?php echo $donnees['agi']; ?></td>
    <td><?php echo $donnees['initiative']; ?></td>
+   <td><?php echo $donnees['agi']; ?></td>
    <td><?php echo $donnees['dexterite']; ?></td>
    <td><?php echo $donnees['intel']; ?></td>
    <td><?php echo $donnees['forceMen']; ?></td>
@@ -58,8 +56,8 @@ while($donnees = mysqli_fetch_assoc($result)) {
    <td><?php echo $donnees['capaTirAug']; ?></td>
    <td><?php echo $donnees['forcepAug']; ?></td>
    <td><?php echo $donnees['enduAug']; ?></td>
-   <td><?php echo $donnees['agiAug']; ?></td>
    <td><?php echo $donnees['initiativeAug']; ?></td>
+   <td><?php echo $donnees['agiAug']; ?></td>
    <td><?php echo $donnees['dexteriteAug']; ?></td>
    <td><?php echo $donnees['intelAug']; ?></td>
    <td><?php echo $donnees['forceMenAug']; ?></td>
@@ -76,8 +74,8 @@ pour les compétences
  $capaTir = ($donnees['capaTir'] + $donnees['capaTirAug']);
  $force = ($donnees['forcep'] + $donnees['forcepAug']);
  $endu = ($donnees['endu'] + $donnees['enduAug']);
- $agi = ($donnees['agi'] + $donnees['agiAug']);
  $initiative = ($donnees['initiative'] + $donnees['initiativeAug']);
+ $agi = ($donnees['agi'] + $donnees['agiAug']);
  $dexterite = ($donnees['dexterite'] + $donnees['dexteriteAug']);
  $intel = ($donnees['intel'] + $donnees['intelAug']); 
  $forceMen = ($donnees['forceMen'] + $donnees['forceMenAug']);
@@ -88,8 +86,8 @@ pour les compétences
    <td><?php echo $capaTir; ?></td>
    <td><?php echo $force; ?></td>
    <td><?php echo $endu; ?></td>
-   <td><?php echo $agi; ?></td>
    <td><?php echo $initiative; ?></td>
+   <td><?php echo $agi; ?></td>
    <td><?php echo $dexterite; ?></td>
    <td><?php echo $intel; ?></td>
    <td><?php echo $forceMen; ?></td>
@@ -156,6 +154,77 @@ while($donnees = mysqli_fetch_assoc($result)) {
   <?php
 }
 ?>
+  <div id="division">
+    <div id="gauche">
+    <h1>Votre équipement</h1>
+  <table align="center" cellpadding="5">
+   <tr>
+     <th>Nom</th>
+     <th>Description</th>
+   </tr>
+   <?php
+   // On récupère tout le contenu de la table equip
+$query = "SELECT * FROM wh_equip WHERE id_joueur = '".$idJoueur."'";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  ?>
+  <tr>
+       <td><?php echo $donnees['nom_equip']; ?></td>
+       <td><?php echo $donnees['deslongue']; ?></td>
+      </tr>
+<?php
+}
+?>
+   </table>
+   </div>
+   <div id="centre">
+   <h1>Votre Or</h1>
+   <table align="center" cellpadding="5">
+   <tr>
+     <th>Sous de cuivre</th>
+     <th>Pistoles d'argent</th>
+     <th>Couronnes d'or</th>
+   </tr>
+   <tr>
+   <?php
+   // On récupère tout le contenu de la table equip
+$query = "SELECT * FROM wh_pj_or WHERE id_joueur = '".$idJoueur."'";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  $CouronnesOr = floor($donnees['argent_tot']/100);
+  $PistolesArgents = floor($donnees['argent_tot']/10) - ($CouronnesOr*10);
+  $SousCuivre = $donnees['argent_tot'] - $PistolesArgents*10 - $CouronnesOr*100;
+
+  ?>
+  <tr>
+       <td><?php echo $SousCuivre; ?></td>
+       <td><?php echo $PistolesArgents; ?></td>
+       <td><?php echo $CouronnesOr; ?></td>
+      </tr>
+<?php
+}
+?>
+</tr>
+   </table>
+   </div>
+   <div id="droite">
+   <h1>Votre santé</h1>
+   <table align="center" cellpadding="5">
+   <tr>
+     <th>Base</th>
+     <th>Dégats</th>
+     <th>Actuelle</th>
+   </tr>
+   <tr>
+   <td><?php echo $valeurFicheBlessure ?></td>
+   <td><?php echo $valeurFicheBlessureSubie ?></td>
+   <td><?php echo ($valeurFicheBlessure - $valeurFicheBlessureSubie) ?></td>
+   </tr>
+   </table>
+   </div>
+   </div>
   <div id="bloc_page">
   <h1>Vos Compétences de base</h1>
 </div>
@@ -172,7 +241,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
 <?php
 
 // On récupère les 13 premières compétences
-$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' ORDER BY id limit 12";
+$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' ORDER BY competence limit 13";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -234,7 +303,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
 <?php
 
 // On récupère les 13 dernières compétences
-$query = "SELECT * FROM (SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' ORDER BY id DESC limit 13) sub ORDER BY id ASC";
+$query = "SELECT * FROM (SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' ORDER BY competence DESC limit 13) sub ORDER BY competence ASC";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -269,7 +338,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
     }elseif($donnees['caracteristique']=='FM'){
       $valeurCompFiche = $forceMen;
      // test pour sociabilité
-    }elseif($donnees['caracteristique']=='FM'){
+    }elseif($donnees['caracteristique']=='Soc'){
       $valeurCompFiche = $sociabilite;
     }else{
       $valeurCompFiche = 0;
@@ -358,20 +427,30 @@ while($donnees = mysqli_fetch_assoc($result)) {
    <tr>
      <th>Nom</th>
      <th>Description</th>
+     <th>Niveau</th>
    </tr>
 
    <?php
 
 // On récupère les différents talents
-$query = "SELECT * from wh_lexique where id IN (SELECT id_talent FROM wh_talent WHERE id_joueur = '".$idJoueur."') ORDER BY nom";
+$query = "SELECT * FROM wh_talent WHERE id_joueur = '".$idJoueur."'";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
   ?>
 
    <tr>
-     <td><?php echo $donnees['nom']; ?></td>
-    <td><?php echo $donnees['descourte']; ?></td>
+   <?php
+   $query2 = "SELECT * from wh_lexique where id = '".$donnees['id_talent']."'";
+   $result2 = mysqli_query($con, $query2);
+   while($donnees2 = mysqli_fetch_assoc($result2)) {
+     ?>
+     <td><?php echo $donnees2['nom']; ?></td>
+     <td><?php echo $donnees2['descourte']; ?></td>
+     <?php
+   }
+   ?>
+    <td><?php echo $donnees['niveau']; ?></td>
     <?php 
 }
 ?>
