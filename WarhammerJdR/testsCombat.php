@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8"/>
-  <title>Picrik's Lab / WARHAMMER</title>
+  <title>Tests Combats / WARHAMMER</title>
   <link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
   <link rel="stylesheet" href="style_WH.css" />
   <title>Picrik's Lab</title>
@@ -30,31 +30,140 @@
     }else{
       $idJoueur = mysqli_real_escape_string($con, $_GET["idJoueur"]);
     }
-
-    // création des variables utilisées
-    $query2 = "SELECT * FROM wh_pjstat WHERE id_joueur = '".$idJoueur."'";
-    $result2 = mysqli_query($con, $query2);
-    while($donnees2 = mysqli_fetch_assoc($result2)) {
-     $valeurFicheCC = ($donnees2['capaCaC'] + $donnees2['capaCaCAug']);
-     $valeurFicheCT = ($donnees2['capaTir'] + $donnees2['capaTirAug']);
-     $valeurFicheF = ($donnees2['forcep'] + $donnees2['forcepAug']);
-     $valeurFicheE = ($donnees2['endu'] + $donnees2['enduAug']);
-     $valeurFicheAgi = ($donnees2['agi'] + $donnees2['agiAug']);
-     $valeurFicheIni = ($donnees2['initiative'] + $donnees2['initiativeAug']);
-     $valeurFicheDex = ($donnees2['dexterite'] + $donnees2['dexteriteAug']);
-     $valeurFicheInt = ($donnees2['intel'] + $donnees2['intelAug']);
-     $valeurFicheFM = ($donnees2['forceMen'] + $donnees2['forceMenAug']);
-     $valeurFicheSoc = ($donnees2['sociabilite'] + $donnees2['sociabiliteAug']);
-    }
    ?>
- <h1>Test de Corps à corps</h1>
- <h2>Attaquant</h2>
- <p>
- <?php echo '<form action = "testCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'"" method = "post">'; ?>
+   <h1>Vos compétences de combat</h1>
+   <table align="center" cellpadding="5">
+   <tr>
+     <th>Nom</th>
+     <th>Compétence</th>
+   </tr>
+  <?php
+   // On récupère les compétences de combat de base
+$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' AND (caracteristique = 'CC' OR competence ='Esquive')";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  ?>
+
+   <tr>
+     <td><?php echo $donnees['competence']; ?></td>
+    <td><?php 
+        if($donnees['caracteristique']=='CC'){
+          $valeurFiche = $valeurFicheCC;
+         // pas de CT test pour force
+        }elseif($donnees['caracteristique']=='Ag'){
+          $valeurFiche = $valeurFicheAgi;
+        }
+        echo ($valeurFiche + $donnees['augmentation']); ?></td>
+        </tr>
+         <?php
+}
+   // On récupère les compétences de combat avancée
+$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' AND (caracteristique = 'CC' OR caracteristique = 'CT' OR competence LIKE '%Magik%' OR competence LIKE '%ocalisation%' OR competence LIKE '%rière%')";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  ?>
+
+   <tr>
+     <td><?php echo $donnees['competence']; ?></td>
+    <td><?php 
+        if($donnees['caracteristique']=='CC'){
+          $valeurFiche = $valeurFicheCC;
+         // pas de CT test pour force
+        }elseif($donnees['caracteristique']=='CT'){
+          $valeurFiche = $valeurFicheCT;
+        }elseif($donnees['caracteristique']=='Int'){
+          $valeurFiche = $valeurFicheInt;
+          }elseif($donnees['caracteristique']=='FM'){
+            $valeurFiche = $valeurFicheFM;
+          }elseif($donnees['caracteristique']=='Soc'){
+            $valeurFiche = $valeurFicheSoc;
+          }
+        echo ($valeurFiche + $donnees['augmentation']); ?></td>
+        </tr>
+         <?php
+}
+?>
+         </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <h1>Votre état</h1>
+   <div id="division">
+   <div id="deuxpart">
+   <h2>Votre santé</h2>
+   <table align="center" cellpadding="5">
+   <tr>
+     <th>Base</th>
+     <th>Dégats</th>
+     <th>Actuelle</th>
+   </tr>
+   <tr>
+   <td><?php echo $valeurFicheBlessure ?></td>
+   <td><?php echo $valeurFicheBlessureSubie ?></td>
+   <td><?php echo ($valeurFicheBlessure - $valeurFicheBlessureSubie) ?></td>
+   </tr>
+   </table>
+   </div>
+   <div id ="deuxpart">
+   <h2>Avantages / état<h2>
+   <?php
+   $query = "SELECT * FROM wh_etat_combat WHERE id_joueur = '".$idJoueur."'";
+   $result = mysqli_query($con, $query);
+   
+   while($donnees = mysqli_fetch_assoc($result)) {
+  ?>
+   <table align="center" cellpadding="5">
+   <tr>
+     <th>Avantage(s)</th>
+     <th>Etat</th>
+   </tr>
+   <tr>
+   <td><?php echo $donnees['avantage']; $avantagesCombats = $donnees['avantage']?></td>
+   <td><?php echo $donnees['etat'] ?></td>
+   </tr>
+   <?php
+   }
+   ?>
+   </table>
+   </div>
+   </div>
+   <h1>Vos tests de combat</h1>
+   <div id="division">
+   <div id="deuxpart">
+   <h2>Attaque</h2>
+   <h3 id="corpsacorps">Corps à corps</h3>
+  <?php echo '<form action = "testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'#corpsacorps" method = "post">'; ?>
  <select name = "compe" id = "compe">
 <?php 
 // On récupère les compétences de base
-$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' and caracteristique = 'CC'";
+$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' AND caracteristique = 'CC'";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -63,23 +172,23 @@ while($donnees = mysqli_fetch_assoc($result)) {
                 <option value="<?php echo $competenceList; ?>"><?php echo $competenceList; ?></option>
 <?php
 }
-// On récupère les compétences avancées
-$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' and caracteristique = 'Int'";
-$result = mysqli_query($con, $query);
+$query2 = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' AND caracteristique = 'CC'";
+$result2 = mysqli_query($con, $query2);
 
-while($donnees = mysqli_fetch_assoc($result)) {
-  $competenceList = $donnees['competence'];
+while($donnees2 = mysqli_fetch_assoc($result2)) {
+  $competenceList2 = $donnees2['competence'];
   ?>
-                <option value="<?php echo $competenceList; ?>"><?php echo $competenceList; ?></option>
+                <option value="<?php echo $competenceList2; ?>"><?php echo $competenceList2; ?></option>
 <?php
 }
 ?>
               </select>
 
-<input type = "submit" value ="Random !" name = "CompeRandom"/>
+<input type = "submit" value ="Random !" name = "CaCRandom"/>
 <br />
-Votre jet de dés : <input type = "number" name = "ValJoueur" id = "ValJoueur" style="width: 50px;"/>
-<input type = "submit" value ="Go !" name = "testcompe"/>
+Votre jet de dés : 
+<br /><input type = "number" name = "ValJoueur" id = "ValJoueur" style="width: 50px;"/>
+<input type = "submit" value ="Go !" name = "CaCcompe"/>
 
 <?php
 if(isset($_POST['idJoueur'])){
@@ -95,98 +204,59 @@ if(isset($_POST['idJoueur'])){
 ?>
 </form>
 <?php
-if (isset($_POST["testcompe"]) or isset($_POST["CompeRandom"])){
+if (isset($_POST["CaCcompe"]) or isset($_POST["CaCRandom"])){
   ?>
-<br />Votre résultat <br />
+<br />Votre compétence avec avantages <br />
 <?php
-$compe = $_POST['compe'];
 $valeurFiche = $valeurFicheCC;
-
-
-
-
-
-
-
-
-
-
-
-
-// revoir sélection compétence
-
-
-
-
-
-
-
-
-
-
-
-
-$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."'";
+$compe = $_POST['compe'];
+$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' and competence = '".$compe."'";
 $result = mysqli_query($con, $query);
+$rows = mysqli_num_rows($result);
 
+if($rows>0){
 while($donnees = mysqli_fetch_assoc($result)) {
-
-    // ton recherche quelle est la valeur associée
-    if ($donnees['caracteristique']=='CC'){
-      $valeurFiche = $valeurFicheCC;
-
-      }elseif ($donnees['caracteristique']=='F'){
-      $valeurFiche =  $valeurFicheF;
-
-      }elseif ($donnees['caracteristique']=='E'){
-      $valeurFiche =  $valeurFicheE;
-
-      }elseif ($donnees['caracteristique']=='Ag'){
-      $valeurFiche =  $valeurFicheAgi;
-
-      }elseif ($donnees['caracteristique']=='I'){
-      $valeurFiche =  $valeurFicheIni;
-
-      }elseif ($donnees['caracteristique']=='Dex'){
-      $valeurFiche =  $valeurFicheDex;
-
-      }elseif ($donnees['caracteristique']=='Int'){
-      $valeurFiche =  $valeurFicheInt;
-
-      }elseif ($donnees['caracteristique']=='FM'){
-      $valeurFiche =  $valeurFicheFM;
-
-      }elseif ($donnees['caracteristique']=='Soc'){
-      $valeurFiche =  $valeurFicheSoc;
-
-    }
+    // on isole l'augementation
+    $augmentationCompe = $donnees['augmentation'];
   }
+
+}else{
+  $query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' and competence = '".$compe."'";
+  $result = mysqli_query($con, $query);
+  while($donnees = mysqli_fetch_assoc($result)) {
+    // on isole l'augementation
+    $augmentationCompe = $donnees['augmentation'];
+  }
+}
     
-    $valeurCompe = $valeurFiche + $donnees['augmentation'];
-    if(isset($_POST["testcompe"])){
+    $valeurCompe = $valeurFiche + $augmentationCompe + ($avantagesCombats*10);
+    if(isset($_POST["CaCcompe"])){
       $valeurJoueur = $_POST['ValJoueur'];
       $Auto = "non";
     }else{
-      $valeurJoueur =  rand(0,99);
+      $valeurJoueur =  rand(1,100);
       $Auto = "oui";
     }
     
-    echo $compe; ?> : <?php
+    echo $compe; ?> est de (<?php
+    echo ($valeurFiche + $augmentationCompe);?>+<?php
+    echo ($avantagesCombats*10);?>
+    ) <?php
     echo $valeurCompe;
-    ?><br />Les dés : <?php
+    ?><br />Votre score au dés est de <strong><?php
     echo $valeurJoueur;
-    ?><br />Le résultat : <?php
+    ?><br /></strong>Le résultat est <?php
     if($valeurJoueur>=95){
-      echo "Maladresse";
+      echo "une <strong>Maladresse</strong>";
       $resultatT = "Maladresse";
     }elseif($valeurJoueur<=5){
-      echo "Critique";
+      echo "un <strong>Critique</strong>";
       $resultatT = "Critique";
-    }elseif($valeurJoueur<=$valeurFiche){
-      echo "Réussite";
+    }elseif($valeurJoueur<=$valeurCompe){
+      echo "une <strong>Réussite</strong>";
       $resultatT = "Réussite";
     }else{
-      echo "Echec";
+      echo "un <strong>Echec</strong>";
       $resultatT = "Echec";
     }      
     ?><br />Le degré de réussite (DR) : <?php
@@ -200,13 +270,12 @@ while($donnees = mysqli_fetch_assoc($result)) {
     mysqli_query($con, $sql);
 }
 ?>
- <h1>Test de Capacité de Tir</h1>
- <p>
- <?php echo '<form action = "tests.php?PJ=TRUE&idJoueur='.$idJoueur.'"" method = "post">'; ?>
+   <h3 id="projectiles">Projectiles</h3>
+   <?php echo '<form action = "testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'#projectiles" method = "post">'; ?>
  <select name = "compe" id = "compe">
 <?php 
 // On récupère les compétences de base
-$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."'";
+$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' AND caracteristique = 'CT'";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -218,10 +287,11 @@ while($donnees = mysqli_fetch_assoc($result)) {
 ?>
               </select>
 
-<input type = "submit" value ="Random !" name = "CompeRandom"/>
+<input type = "submit" value ="Random !" name = "CTRandom"/>
 <br />
-Votre jet de dés : <input type = "number" name = "ValJoueur" id = "ValJoueur" style="width: 50px;"/>
-<input type = "submit" value ="Go !" name = "testcompe"/>
+Votre jet de dés : 
+<br /><input type = "number" name = "ValJoueur" id = "ValJoueur" style="width: 50px;"/>
+<input type = "submit" value ="Go !" name = "CTcompe"/>
 
 <?php
 if(isset($_POST['idJoueur'])){
@@ -237,72 +307,250 @@ if(isset($_POST['idJoueur'])){
 ?>
 </form>
 <?php
-if (isset($_POST["testcompe"]) or isset($_POST["CompeRandom"])){
+if (isset($_POST["CTcompe"]) or isset($_POST["CTRandom"])){
   ?>
-<br />Votre résultat <br />
+<br />Votre compétence avec avantages <br />
 <?php
+$valeurFiche = $valeurFicheCT;
 $compe = $_POST['compe'];
-$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."'";
+$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' and competence = '".$compe."'";
 $result = mysqli_query($con, $query);
-
 while($donnees = mysqli_fetch_assoc($result)) {
-
-    // ton recherche quelle est la valeur associée
-    if ($donnees['caracteristique']=='CC'){
-      $valeurFiche = $valeurFicheCC;
-
-      }elseif ($donnees['caracteristique']=='F'){
-      $valeurFiche =  $valeurFicheF;
-
-      }elseif ($donnees['caracteristique']=='E'){
-      $valeurFiche =  $valeurFicheE;
-
-      }elseif ($donnees['caracteristique']=='Ag'){
-      $valeurFiche =  $valeurFicheAgi;
-
-      }elseif ($donnees['caracteristique']=='I'){
-      $valeurFiche =  $valeurFicheIni;
-
-      }elseif ($donnees['caracteristique']=='Dex'){
-      $valeurFiche =  $valeurFicheDex;
-
-      }elseif ($donnees['caracteristique']=='Int'){
-      $valeurFiche =  $valeurFicheInt;
-
-      }elseif ($donnees['caracteristique']=='FM'){
-      $valeurFiche =  $valeurFicheFM;
-
-      }elseif ($donnees['caracteristique']=='Soc'){
-      $valeurFiche =  $valeurFicheSoc;
-
-    }
+    // on isole l'augementation
+    $augmentationCompe = $donnees['augmentation'];
   }
     
-    $valeurCompe = $valeurFiche + $donnees['augmentation'];
-    if(isset($_POST["testcompe"])){
+    $valeurCompe = $valeurFiche + $augmentationCompe + ($avantagesCombats*10);
+    if(isset($_POST["CTcompe"])){
       $valeurJoueur = $_POST['ValJoueur'];
       $Auto = "non";
     }else{
-      $valeurJoueur =  rand(0,99);
+      $valeurJoueur =  rand(1,100);
       $Auto = "oui";
     }
     
-    echo $compe; ?> : <?php
+    echo $compe; ?> est de (<?php
+    echo ($valeurFiche + $augmentationCompe);?>+<?php
+    echo ($avantagesCombats*10);?>
+    ) <?php
     echo $valeurCompe;
-    ?><br />Les dés : <?php
+    ?><br />Votre score au dés est de <strong><?php
     echo $valeurJoueur;
-    ?><br />Le résultat : <?php
+    ?><br /></strong>Le résultat est <?php
     if($valeurJoueur>=95){
-      echo "Maladresse";
+      echo "une <strong>Maladresse</strong>";
       $resultatT = "Maladresse";
     }elseif($valeurJoueur<=5){
-      echo "Critique";
+      echo "un <strong>Critique</strong>";
       $resultatT = "Critique";
-    }elseif($valeurJoueur<=$valeurFiche){
-      echo "Réussite";
+    }elseif($valeurJoueur<=$valeurCompe){
+      echo "une <strong>Réussite</strong>";
       $resultatT = "Réussite";
     }else{
-      echo "Echec";
+      echo "un <strong>Echec</strong>";
+      $resultatT = "Echec";
+    }      
+    ?><br />Le degré de réussite (DR) : <?php
+    $dizvaleurCompe = floor($valeurCompe/10);
+    $dizValeurJoueur = floor($valeurJoueur/10);
+    echo $dizvaleurCompe-$dizValeurJoueur;
+    $degreReussite = $dizvaleurCompe-$dizValeurJoueur;
+
+    $sql = "INSERT INTO wh_test(id_joueur, competence, valeurFiche, valeurDes, resultat, degreReussite, automatique) 
+    VALUES ('".$idJoueur."', '".$compe."', '".$valeurCompe."', '".$valeurJoueur."', '".$resultatT."', '".$degreReussite."', '".$Auto."')";
+    mysqli_query($con, $sql);
+}
+$query = "SELECT * FROM wh_pjcar WHERE id_joueur = '".$idJoueur."'";
+$result = mysqli_query($con, $query);
+while($donnees = mysqli_fetch_assoc($result)) {
+  if(($donnees['magie']=='oui') or ($donnees['beni']=='oui')){
+?>
+   <h3 id="magie">Magie/Prière</h3>
+   <?php echo '<form action = "testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'#magie" method = "post">'; ?>
+ <select name = "compe" id = "compe">
+<?php 
+// On récupère les compétences de base
+$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' AND (competence LIKE '%Magik%' OR competence LIKE '%ocalisation%' OR competence LIKE '%rière%') ORDER BY competence";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  $competenceList = $donnees['competence'];
+  ?>
+                <option value="<?php echo $competenceList; ?>"><?php echo $competenceList; ?></option>
+<?php
+}
+?>
+              </select>
+
+<input type = "submit" value ="Random !" name = "MagRandom"/>
+<br />
+Votre jet de dés : 
+<br /><input type = "number" name = "ValJoueur" id = "ValJoueur" style="width: 50px;"/>
+<input type = "submit" value ="Go !" name = "Magcompe"/>
+
+<?php
+if(isset($_POST['idJoueur'])){
+        ?>
+        <hidden><input type = "hidden" name = "idJoueur" id = "idJoueur" value=<?php echo $_POST['idJoueur'];?> /></hidden>
+        <?php
+
+        }else{
+            ?>
+            <hidden><input type = "hidden" name = "idJoueur" id = "idJoueur" value=<?php echo $_GET['idJoueur'];?> /></hidden>
+            <?php
+        }
+?>
+</form>
+<?php
+if (isset($_POST["MagRandom"]) or isset($_POST["Magcompe"])){
+  ?>
+<br />Votre compétence avec avantages <br />
+<?php
+$compe = $_POST['compe'];
+$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' and competence = '".$compe."'";
+$result = mysqli_query($con, $query);
+while($donnees = mysqli_fetch_assoc($result)) {
+    // on isole l'augementation
+    $augmentationCompe = $donnees['augmentation'];
+    // si compé basé sur Int
+    if($donnees['caracteristique']=='Int'){
+    $valeurFiche = $valeurFicheInt;
+    }elseif($donnees['caracteristique']=='FM'){
+      $valeurFiche = $valeurFicheFM;
+    }elseif($donnees['caracteristique']=='Soc'){
+      $valeurFiche = $valeurFicheSoc;
+    }
+  }
+    
+    $valeurCompe = $valeurFiche + $augmentationCompe + ($avantagesCombats*10);
+    if(isset($_POST["Magcompe"])){
+      $valeurJoueur = $_POST['ValJoueur'];
+      $Auto = "non";
+    }else{
+      $valeurJoueur =  rand(1,100);
+      $Auto = "oui";
+    }
+    
+    echo $compe; ?> est de (<?php
+    echo ($valeurFiche + $augmentationCompe);?>+<?php
+    echo ($avantagesCombats*10);?>
+    ) <?php
+    echo $valeurCompe;
+    ?><br />Votre score au dés est de <strong><?php
+    echo $valeurJoueur;
+    ?><br /></strong>Le résultat est <?php
+    if($valeurJoueur>=95){
+      echo "une <strong>Maladresse</strong>";
+      $resultatT = "Maladresse";
+    }elseif($valeurJoueur<=5){
+      echo "un <strong>Critique</strong>";
+      $resultatT = "Critique";
+    }elseif($valeurJoueur<=$valeurCompe){
+      echo "une <strong>Réussite</strong>";
+      $resultatT = "Réussite";
+    }else{
+      echo "un <strong>Echec</strong>";
+      $resultatT = "Echec";
+    }      
+    ?><br />Le degré de réussite (DR) : <?php
+    $dizvaleurCompe = floor($valeurCompe/10);
+    $dizValeurJoueur = floor($valeurJoueur/10);
+    echo $dizvaleurCompe-$dizValeurJoueur;
+    $degreReussite = $dizvaleurCompe-$dizValeurJoueur;
+
+    $sql = "INSERT INTO wh_test(id_joueur, competence, valeurFiche, valeurDes, resultat, degreReussite, automatique) 
+    VALUES ('".$idJoueur."', '".$compe."', '".$valeurCompe."', '".$valeurJoueur."', '".$resultatT."', '".$degreReussite."', '".$Auto."')";
+    mysqli_query($con, $sql);
+}
+  }
+}
+?>
+   </div>
+   <div id="deuxpart">
+   <h2>Défense</h2>
+   <h3>Corps à Corps</h3>
+   <?php echo '<form action = "testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'"" method = "post">'; ?>
+ <select name = "compe" id = "compe">
+<?php 
+// On récupère les compétences de base
+$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' AND (competence = 'Corps à corps' OR competence ='Esquive')";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  $competenceList = $donnees['competence'];
+  ?>
+                <option value="<?php echo $competenceList; ?>"><?php echo $competenceList; ?></option>
+<?php
+}
+?>
+              </select>
+
+<input type = "submit" value ="Random !" name = "DefRandom"/>
+<br />
+Votre jet de dés : 
+<br /><input type = "number" name = "ValJoueur" id = "ValJoueur" style="width: 50px;"/>
+<input type = "submit" value ="Go !" name = "Defcompe"/>
+
+<?php
+if(isset($_POST['idJoueur'])){
+        ?>
+        <hidden><input type = "hidden" name = "idJoueur" id = "idJoueur" value=<?php echo $_POST['idJoueur'];?> /></hidden>
+        <?php
+
+        }else{
+            ?>
+            <hidden><input type = "hidden" name = "idJoueur" id = "idJoueur" value=<?php echo $_GET['idJoueur'];?> /></hidden>
+            <?php
+        }
+?>
+</form>
+<?php
+if (isset($_POST["Defcompe"]) or isset($_POST["DefRandom"])){
+  ?>
+<br />Votre compétence avec avantages <br />
+<?php
+$compe = $_POST['compe'];
+$query = "SELECT * FROM wh_compbase WHERE id_joueur = '".$idJoueur."' and competence = '".$compe."'";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+    // on isole l'augementation
+    $augmentationCompe = $donnees['augmentation'];
+    // test valeur
+    if($donnees['caracteristique']=='CC'){
+      $valeurFiche = $valeurFicheCC;
+      }elseif($donnees['caracteristique']=='Ag'){
+        $valeurFiche = $valeurFicheAgi;
+      }
+  }
+    $valeurCompe = $valeurFiche + $augmentationCompe + ($avantagesCombats*10);
+    if(isset($_POST["Defcompe"])){
+      $valeurJoueur = $_POST['ValJoueur'];
+      $Auto = "non";
+    }else{
+      $valeurJoueur =  rand(1,100);
+      $Auto = "oui";
+    }
+    
+    echo $compe; ?> est de (<?php
+    echo ($valeurFiche + $augmentationCompe);?>+<?php
+    echo ($avantagesCombats*10);?>
+    ) <?php
+    echo $valeurCompe;
+    ?><br />Votre score au dés est de <strong><?php
+    echo $valeurJoueur;
+    ?><br /></strong>Le résultat est <?php
+    if($valeurJoueur>=95){
+      echo "une <strong>Maladresse</strong>";
+      $resultatT = "Maladresse";
+    }elseif($valeurJoueur<=5){
+      echo "un <strong>Critique</strong>";
+      $resultatT = "Critique";
+    }elseif($valeurJoueur<=$valeurCompe){
+      echo "une <strong>Réussite</strong>";
+      $resultatT = "Réussite";
+    }else{
+      echo "un <strong>Echec</strong>";
       $resultatT = "Echec";
     }      
     ?><br />Le degré de réussite (DR) : <?php
@@ -316,7 +564,8 @@ while($donnees = mysqli_fetch_assoc($result)) {
     mysqli_query($con, $sql);
 }
 ?>
-<h1>Test de Magie</h1>
+   </div>
+   </div>
 <h1>Vos anciens tests</h1>
 <table align="center" cellpadding="5">
    <tr>

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Picrik's Lab</title>
+  <title>ADMIN / Warhammer</title>
   <link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
   <link rel="stylesheet" href="style_WH.css" />
   <title>Picrik's Lab</title>
@@ -13,6 +13,7 @@
 
 <?php include("titreWH.php"); ?>
   <?php include("entete.php"); ?>
+  </table>
   <div id="bloc_page">
     <?php
             require 'dbconnect.php';
@@ -32,9 +33,14 @@
       $idJoueur = mysqli_real_escape_string($con, $_GET["idJoueur"]);
     }
 
+    //affichage ou non de la page ADMIN
+    $query = "SELECT * FROM wh_pjcar WHERE id_joueur = '".$idJoueur."'";
+    $result = mysqli_query($con, $query);
+    while($donnees = mysqli_fetch_assoc($result)) {
+    if($donnees['administrateur']=='oui'){
+
         ?>
         <h1>Gestion de la session</h1>
-        <h2>Gestion de l'équipement d'un joueur</h2>
         <div id="division">
         <div id="gauche">
         <h3>Gestion de l'or d'un joueur</h3>
@@ -104,7 +110,7 @@ Modification de l'or <br />
 if(isset($_POST["gestionOR2"])){
 
   $idJoueur = $_POST['idJoueur'];
-  $RajoutOR = $_POST['RajoutOR'];
+  $RajoutOR = mysqli_real_escape_string($con, $_POST['RajoutOR']);
   $OR_PJ = $_POST['OR_PJ'];
   $nomPersonnage = $_POST['nomPersonnage'];
   
@@ -168,8 +174,8 @@ $result2 = mysqli_query($con, $query2);
 while($donnees2 = mysqli_fetch_assoc($result2)) {
   $nomPersonnage = $donnees2['nomPerso'];
 }
-$Objet = $_POST['nomObjet'];
-$desObjet = $_POST['desObjet'];
+$Objet = mysqli_real_escape_string($con, $_POST['nomObjet']);
+$desObjet = mysqli_real_escape_string($con, $_POST['desObjet']);
 echo $nomPersonnage;
 ?> <br /> <?php
 echo " a reçu ";
@@ -180,7 +186,7 @@ echo " qui a pour description : ";
 ?> <br /> <?php
 echo $desObjet;
 
-$sql = "INSERT INTO wh_equip(id_joueur, nom_equip, deslongue) VALUES ('".$personnage."', '".$Objet."', '".$desObjet."')";
+$sql = "INSERT INTO wh_equip (id_joueur, nom_equip, deslongue) VALUES ('".$personnage."', '".$Objet."', '".$desObjet."')";
 mysqli_query($con, $sql);
 }
 ?>
@@ -319,7 +325,6 @@ echo ($PV_PJ - $Blessure_PJ);
 
 echo '<form action = "admin.php?PJ=TRUE&idJoueur='.$idJoueur.'"" method = "post">'; ?>
 <br />
-<br />
 Modification des blessures <br />
 <input type = "number" name = "RajoutBLS" id = "RajoutBLS" style="width: 50px;"/>
 <hidden><input type = "hidden" name = "idJoueur" id = "idJoueur" value=<?php echo $personnage;?> /></hidden>
@@ -335,7 +340,7 @@ Modification des blessures <br />
 if (isset($_POST["gestionDMG2"])){
 
 $idJoueur = $_POST['idJoueur'];
-$RajoutBLS = $_POST['RajoutBLS'];
+$RajoutBLS = mysqli_real_escape_string($con, $_POST['RajoutBLS']);
 $Blessure_PJ = $_POST['Blessure_PJ'];
 $PV_PJ = $_POST['PV_PJ'];
 $nomPersonnage = $_POST['nomPersonnage'];
@@ -363,10 +368,93 @@ mysqli_query($con, $sql);
 </div>
 <div id="deuxpart">
         <h2>Gestion des avantages de combat</h2>
+        <?php echo '<form action = "admin.php?PJ=TRUE&idJoueur='.$idJoueur.'"" method = "post">'; ?>
+ <select name = "personnage" id = "personnage">
+<?php 
+// On récupère les compétences de base
+$query = "SELECT * FROM wh_pjcar ORDER BY nomPerso";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  $id_joueur = $donnees['id_joueur'];
+  $personnage = $donnees['nomPerso'];
+  ?>
+                <option value="<?php echo $id_joueur; ?>"><?php echo $personnage; ?></option>
+<?php
+}
+?>
+              </select>
+<br />
+<input type = "submit" value ="Gestion des avantages" name = "gestionAvantages"/>
+</form>
+
+<?php
+if (isset($_POST["gestionAvantages"])){
+$personnage = $_POST['personnage'];
+$query = "SELECT * FROM wh_pjcar WHERE id_joueur = '".$personnage."'";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  $nomPersonnage = $donnees['nomPerso'];
+}
+$query2 = "SELECT * FROM wh_etat_combat WHERE id_joueur = '".$personnage."'";
+$result2 = mysqli_query($con, $query2);
+
+while($donnees2 = mysqli_fetch_assoc($result2)) {
+  $PJ_avantages = $donnees2['avantage'];
+  $PJ_etat = $donnees2['etat'];
+}
+?><br /><?php
+echo $nomPersonnage;
+?> <br /> Avantage(s) : <?php
+echo $PJ_avantages;
+?> <br /> etat : <?php
+echo $PJ_etat;
+
+
+echo '<form action = "admin.php?PJ=TRUE&idJoueur='.$idJoueur.'"" method = "post">'; ?>
+<br />
+Modification des avantages <br />
+<input type = "number" name = "RajoutAVT" id = "RajoutAVT" style="width: 50px;"/>
+<hidden><input type = "hidden" name = "idJoueur" id = "idJoueur" value=<?php echo $personnage;?> /></hidden>
+<hidden><input type = "hidden" name = "PJ_avantages" id = "PJ_avantages" value=<?php echo $PJ_avantages;?> /></hidden>
+<hidden><input type = "hidden" name = "PJ_etat" id = "PJ_etat" value=<?php echo $PJ_etat;?> /></hidden>
+<hidden><input type = "hidden" name = "nomPersonnage" id = "nomPersonnage" value=<?php echo $nomPersonnage;?> /></hidden>
+<br />
+<input type = "submit" value ="Calcul !" name = "gestionAvantages2"/>
+</form>
+
+<?php
+}
+if (isset($_POST["gestionAvantages2"])){
+
+$idJoueur = $_POST['idJoueur'];
+$RajoutAVT = mysqli_real_escape_string($con, $_POST['RajoutAVT']);
+$PJ_avantages = $_POST['PJ_avantages'];
+$PJ_etat = $_POST['PJ_etat'];
+$nomPersonnage = $_POST['nomPersonnage'];
+
+$nouveauAVT = $PJ_avantages + $RajoutAVT;
+?>Mise à jour des avantages <br /><?php
+echo $nomPersonnage;
+?> <br /> Avantages :<?php
+echo $nouveauAVT;
+
+$sql = "UPDATE wh_etat_combat SET avantage = '".$nouveauAVT."' WHERE id_joueur = '".$idJoueur."'";
+mysqli_query($con, $sql);
+}
+?>
         </div>
         </div>
   </div>
   <div>
+  <?php
+    }else{
+      ?>
+      <h1>Vous n'avez pas les accès</h1>
+      <?php
+    } 
+  }?>
   <?php include("copyright.php"); ?>
   </div>
   <div>

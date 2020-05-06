@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8"/>
-  <title>Picrik's Lab / WARHAMMER</title>
+  <title>Histoire / WARHAMMER</title>
   <link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
   <link rel="stylesheet" href="style_WH.css" />
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"

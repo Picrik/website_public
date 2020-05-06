@@ -19,6 +19,7 @@
         echo '<li><a href="joueur.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Personnage</a></li>';
         echo '<li><a href="histoirepj.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Histoire Personnelle</a></li>';
         echo '<li><a href="tests.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Gestion des tests</a></li>';
+        echo '<li><a href="testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Gestion des Combats</a></li>';
         // echo '<li><a href="testsCombat.php?PJ=TRUE&idJoueur='.$idJoueur.'"">Gestion des combats</a></li>'; WIP
 
         //affichage ou non du grimoire
@@ -52,4 +53,5 @@
     <li>
     <a href="connexion.php">Deconnexion</a>
     </li>
+    </ul>
 </div>

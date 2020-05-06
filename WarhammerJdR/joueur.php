@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8"/>
-  <title>Picrik's Lab / WARHAMMER</title>
+  <title>Personnage / WARHAMMER</title>
   <link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
   <link rel="stylesheet" href="style_WH.css" />
   <title>Picrik's Lab</title>
@@ -371,7 +371,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
 <?php
 
 // On récupère les 13 premières compétences
-$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."'";
+$query = "SELECT * FROM wh_compspe WHERE id_joueur = '".$idJoueur."' ORDER BY competence ASC";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -384,7 +384,10 @@ while($donnees = mysqli_fetch_assoc($result)) {
     // test pour cc
     if($donnees['caracteristique']=='CC'){
       $valeurCompFiche = $capaCaC;
-     // pas de CT test pour force
+     // test pour ct
+    }elseif($donnees['caracteristique']=='CT'){
+      $valeurCompFiche = $capaTir;
+      // test pour force
     }elseif($donnees['caracteristique']=='F'){
      $valeurCompFiche = $force;
      // test pour endurance

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8"/>
-  <title>Grimoire / WARHAMMER</title>
+  <title>Prières / WARHAMMER</title>
   <link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
   <link rel="stylesheet" href="style_WH.css" />
   <title>Picrik's Lab</title>
@@ -48,11 +48,25 @@
      $valeurFicheSoc = ($donnees2['sociabilite'] + $donnees2['sociabiliteAug']);
     }
    ?>
- <h1>Grimoire</h1>
+   <h1>Tes commandements</h1>
+   <ul>
+   <?php
+// On récupère les différents talents
+$query = "SELECT * from wh_dieu_com where dieu IN (SELECT dieu FROM wh_pjcar WHERE id_joueur = '".$idJoueur."')";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  ?>
+
+    <li><?php echo $donnees['commandement']; ?></li>
+    <?php 
+}
+?>
+</ul>
+ <h1>Prières</h1>
  <table align="center" cellpadding="5">
    <tr>
      <th>Nom</th>
-     <th>NI</th>
      <th>Portée</th>
      <th>Cible</th>
      <th>Durée</th>
@@ -62,7 +76,7 @@
    <?php
 
 // On récupère les différents talents
-$query = "SELECT * from wh_sort where id IN (SELECT id_sort FROM wh_sort_pj WHERE id_joueur = '".$idJoueur."') ORDER BY nom";
+$query = "SELECT * from wh_priere where id IN (SELECT id_priere FROM wh_priere_pj WHERE id_joueur = '".$idJoueur."') ORDER BY nom";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -70,7 +84,6 @@ while($donnees = mysqli_fetch_assoc($result)) {
 
    <tr>
      <td><?php echo $donnees['nom']; ?></td>
-     <td><?php echo $donnees['NI']; ?></td>
     <td><?php echo $donnees['Portee']; ?></td>
     <td><?php echo $donnees['Cible']; ?></td>
     <td><?php echo $donnees['Duree']; ?></td>
