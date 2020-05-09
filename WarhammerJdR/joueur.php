@@ -164,7 +164,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
    </tr>
    <?php
    // On récupère tout le contenu de la table equip
-$query = "SELECT * FROM wh_equip WHERE id_joueur = '".$idJoueur."'";
+$query = "SELECT * FROM wh_equip WHERE id_joueur = '".$idJoueur."' ORDER BY nom_equip";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
@@ -193,9 +193,9 @@ $query = "SELECT * FROM wh_pj_or WHERE id_joueur = '".$idJoueur."'";
 $result = mysqli_query($con, $query);
 
 while($donnees = mysqli_fetch_assoc($result)) {
-  $CouronnesOr = floor($donnees['argent_tot']/100);
-  $PistolesArgents = floor($donnees['argent_tot']/10) - ($CouronnesOr*10);
-  $SousCuivre = $donnees['argent_tot'] - $PistolesArgents*10 - $CouronnesOr*100;
+  $CouronnesOr = floor($donnees['argent_tot']/240);
+  $PistolesArgents = floor($donnees['argent_tot']/12) - ($CouronnesOr*20);
+  $SousCuivre = $donnees['argent_tot'] - $PistolesArgents*12 - $CouronnesOr*240;
 
   ?>
   <tr>

@@ -86,37 +86,34 @@ while($donnees = mysqli_fetch_assoc($result)) {
 }
 ?>
          </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    <h1>Votre état</h1>
    <div id="division">
-   <div id="deuxpart">
+   <div id="gauche">
+   <h1>Votre équipement</h1>
+  <table align="center" cellpadding="5">
+   <tr>
+     <th>Nom</th>
+     <th>Description</th>
+   </tr>
+   <?php
+   // On récupère tout le contenu de la table equip
+$query = "SELECT * FROM wh_equip WHERE id_joueur = '".$idJoueur."'";
+$result = mysqli_query($con, $query);
+
+while($donnees = mysqli_fetch_assoc($result)) {
+  if($donnees['combat']=='oui'){
+  ?>
+  <tr>
+       <td><?php echo $donnees['nom_equip']; ?></td>
+       <td><?php echo $donnees['deslongue']; ?></td>
+      </tr>
+<?php
+  }
+}
+?>
+   </table>
+   </div>
+   <div id="centre">
    <h2>Votre santé</h2>
    <table align="center" cellpadding="5">
    <tr>
@@ -131,7 +128,7 @@ while($donnees = mysqli_fetch_assoc($result)) {
    </tr>
    </table>
    </div>
-   <div id ="deuxpart">
+   <div id ="droite">
    <h2>Avantages / état<h2>
    <?php
    $query = "SELECT * FROM wh_etat_combat WHERE id_joueur = '".$idJoueur."'";

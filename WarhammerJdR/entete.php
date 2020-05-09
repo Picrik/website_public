@@ -37,6 +37,13 @@
      $valeurFicheBlessure = floor($valeurFicheF/10) + (2*floor($valeurFicheE/10)) + floor($valeurFicheFM/10);
      $valeurFicheBlessureSubie = $donnees2['BlessureSubie'];
     }
+    $query3 = "SELECT * FROM wh_talent WHERE id_joueur = '".$idJoueur."'";
+    $result3 = mysqli_query($con, $query3);
+    while($donnees3 = mysqli_fetch_assoc($result3)) {
+     if($donnees3['id_talent']==48){
+      $valeurFicheBlessure = $valeurFicheBlessure + $donnees3['niveau'];
+     }
+    }
    ?>
    <p>
      <!-- création de tableaux pour afficher les résultats -->

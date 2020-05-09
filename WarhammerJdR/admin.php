@@ -159,6 +159,12 @@ Nom de l'objet :
 Description de l'objet : 
 <br /><input type = "test" name = "desObjet" id = "desObjet" style="width: 250px;"/>
 <br />
+Combat :
+<br /><select name = "combat" id = "combat">
+<option value="oui">oui</option>
+<option value="non">non</option>
+</select>
+<br />
 <input type = "submit" value ="Ajouter !" name = "ajoutObjet"/>
 </form>
 
@@ -176,6 +182,7 @@ while($donnees2 = mysqli_fetch_assoc($result2)) {
 }
 $Objet = mysqli_real_escape_string($con, $_POST['nomObjet']);
 $desObjet = mysqli_real_escape_string($con, $_POST['desObjet']);
+$combat = mysqli_real_escape_string($con, $_POST['combat']);
 echo $nomPersonnage;
 ?> <br /> <?php
 echo " a reçu ";
@@ -186,7 +193,7 @@ echo " qui a pour description : ";
 ?> <br /> <?php
 echo $desObjet;
 
-$sql = "INSERT INTO wh_equip (id_joueur, nom_equip, deslongue) VALUES ('".$personnage."', '".$Objet."', '".$desObjet."')";
+$sql = "INSERT INTO wh_equip (id_joueur, nom_equip, deslongue, combat) VALUES ('".$personnage."', '".$Objet."', '".$desObjet."', '".$combat."')";
 mysqli_query($con, $sql);
 }
 ?>
